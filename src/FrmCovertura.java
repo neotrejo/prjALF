@@ -29,13 +29,19 @@
  */
 
 
+import java.util.Set;
 import javax.swing.JFileChooser;
+import javax.swing.table.TableColumn;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JTable;
 
-public class Antenna extends javax.swing.JFrame {
+
+public class FrmCovertura extends javax.swing.JFrame {
     
-    /** Creates new form Antenna */
-    public Antenna() {
+    /** Creates new form FrmCovertura */
+    public FrmCovertura() {
         initComponents();
+        
     }
     
     /** This method is called from within the constructor to
@@ -55,13 +61,13 @@ public class Antenna extends javax.swing.JFrame {
         transitionsCounter = new javax.swing.JSpinner();
         placesCounter = new javax.swing.JSpinner();
         jScrollPane2 = new javax.swing.JScrollPane();
-        preMatrix1 = new javax.swing.JTable();
+        preMatrix = new javax.swing.JTable();
         label3 = new java.awt.Label();
         label4 = new java.awt.Label();
         jScrollPane3 = new javax.swing.JScrollPane();
-        preMatrix2 = new javax.swing.JTable();
+        m0Matrix = new javax.swing.JTable();
         label5 = new java.awt.Label();
-        jButton1 = new javax.swing.JButton();
+        createPNGraph = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         reachGraph = new java.awt.Canvas();
@@ -80,7 +86,12 @@ public class Antenna extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Antenna");
+        setTitle("FrmCovertura");
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PN Configuration", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 14))); // NOI18N
         jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -88,12 +99,12 @@ public class Antenna extends javax.swing.JFrame {
 
         postMatrix.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {"1", "0", "0"},
+                {"1", "1", "0"},
+                {"0", "1", "1"}
             },
             new String [] {
-                "t0", "t1", "t3", "t3"
+                "t0", "t1", "t2"
             }
         ));
         postMatrix.setRowHeight(18);
@@ -107,22 +118,36 @@ public class Antenna extends javax.swing.JFrame {
         label2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label2.setText("PLACES");
 
-        transitionsCounter.setVerifyInputWhenFocusTarget(false);
+        transitionsCounter.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(3), Integer.valueOf(1), null, Integer.valueOf(1)));
+        transitionsCounter.setValue(3);
+        transitionsCounter.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                transitionsCounterStateChanged(evt);
+            }
+        });
 
-        preMatrix1.setModel(new javax.swing.table.DefaultTableModel(
+        placesCounter.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(3), Integer.valueOf(1), null, Integer.valueOf(1)));
+        placesCounter.setValue(3);
+        placesCounter.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                placesCounterStateChanged(evt);
+            }
+        });
+
+        preMatrix.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {"1", "1", "0"},
+                {"0", "0", "1"},
+                {"0", "0", "1"}
             },
             new String [] {
-                "t0", "t1", "t3", "t3"
+                "t0", "t1", "t2"
             }
         ));
-        preMatrix1.setRowHeight(18);
-        preMatrix1.getTableHeader().setResizingAllowed(false);
-        preMatrix1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(preMatrix1);
+        preMatrix.setRowHeight(18);
+        preMatrix.getTableHeader().setResizingAllowed(false);
+        preMatrix.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(preMatrix);
 
         label3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label3.setText("PRE MATRIX");
@@ -130,25 +155,30 @@ public class Antenna extends javax.swing.JFrame {
         label4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label4.setText("POST MATRIX");
 
-        preMatrix2.setModel(new javax.swing.table.DefaultTableModel(
+        m0Matrix.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null}
+                {"1"},
+                {"0"},
+                {"0"}
             },
             new String [] {
                 "MARKING"
             }
         ));
-        preMatrix2.setRowHeight(18);
-        preMatrix2.getTableHeader().setResizingAllowed(false);
-        preMatrix2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane3.setViewportView(preMatrix2);
+        m0Matrix.setRowHeight(18);
+        m0Matrix.getTableHeader().setResizingAllowed(false);
+        m0Matrix.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(m0Matrix);
 
         label5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label5.setText("INIT. MARKING");
 
-        jButton1.setText("Create PN Graph");
+        createPNGraph.setText("Create PN Graph");
+        createPNGraph.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createPNGraphActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Clear PN Config.");
 
@@ -186,7 +216,7 @@ public class Antenna extends javax.swing.JFrame {
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jButton2)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jButton1)
+                .add(createPNGraph)
                 .add(25, 25, 25))
         );
         jPanel1Layout.setVerticalGroup(
@@ -216,7 +246,7 @@ public class Antenna extends javax.swing.JFrame {
                     .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 13, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jButton1)
+                    .add(createPNGraph)
                     .add(jButton2))
                 .addContainerGap())
         );
@@ -245,7 +275,6 @@ public class Antenna extends javax.swing.JFrame {
         );
 
         jButton3.setText("Close");
-        jButton3.setActionCommand("Close");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -286,7 +315,156 @@ public class Antenna extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+         // Set columns width in preMatrix and postMatrix tables
+        updateColumnWidth();
+        transitionsCounter.setValue(3);
+        placesCounter.setValue(3);
+        
+    }//GEN-LAST:event_formComponentShown
+
+    private void transitionsCounterStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_transitionsCounterStateChanged
+        // Add remove transitions (columns) to the tables.
+        int colVal = Integer.parseInt(transitionsCounter.getValue().toString());
+        int nCol = preMatrix.getColumnModel().getColumnCount();
+        TableColumn tcolPre = new TableColumn();        
+        TableColumn tcolPost = new TableColumn();
+        DefaultTableModel preMatrixModel = (DefaultTableModel)preMatrix.getModel();
+        DefaultTableModel postMatrixModel = (DefaultTableModel)postMatrix.getModel();
+          
+        nCol = (nCol < 1) ? 1 : nCol;
+        if(nCol < colVal){ //Agregar Columnas
+            preMatrixModel.addColumn("t" + (nCol));
+            postMatrixModel.addColumn("t" + (nCol));            
+
+        }else if(nCol > colVal){ //Remover Columnas            
+           removeColumn(nCol-1, preMatrix);
+           removeColumn(nCol-1, postMatrix);
+        }       
+        updateColumnWidth();        
+    }//GEN-LAST:event_transitionsCounterStateChanged
+
+    private void placesCounterStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_placesCounterStateChanged
+        // Add remove places (rows) to the tables.
+        int rowVal = Integer.parseInt(placesCounter.getValue().toString());
+        int nRow = preMatrix.getModel().getRowCount();        
+          
+        nRow = (nRow < 1) ? 1 : nRow;
+        
+        if(nRow < rowVal){ //Agregar Columnas
+            DefaultTableModel model = (DefaultTableModel) preMatrix.getModel();
+            model.addRow(new Object[]{});
+            
+            model = (DefaultTableModel) postMatrix.getModel();
+            model.addRow(new Object[]{});
+            
+            model = (DefaultTableModel) m0Matrix.getModel();
+            model.addRow(new Object[]{});
+
+        }else if(nRow > rowVal){ //Remover Columnas            
+           removeRows(nRow-1, preMatrix);
+           removeRows(nRow-1, postMatrix);
+        }
+       
+        updateColumnWidth();
+    }//GEN-LAST:event_placesCounterStateChanged
+
+    private void createPNGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPNGraphActionPerformed
+        // Initializes Petry Network Object called "pn": Do not modify.
+        petryNetwork pn = new petryNetwork(Integer.parseInt(placesCounter.getValue().toString()),
+                Integer.parseInt(transitionsCounter.getValue().toString()));
+        
+        int nRows = Integer.parseInt(placesCounter.getValue().toString());
+        int nCols = Integer.parseInt(transitionsCounter.getValue().toString());
+        
+        //Loads the preMatrix  data onto the pn object: Do not modify.
+        for (int colIndex = 0; colIndex < nCols; colIndex++){
+            for (int rowIndex = 0; rowIndex < nRows; rowIndex++){
+                int value = Integer.parseInt(preMatrix.getValueAt(rowIndex, colIndex).toString());
+                pn.setPreValue(rowIndex, colIndex, value);        
+            }
+        }
+        //Loads the postMatrix  data onto the pn object: Do not modify.
+        for (int colIndex = 0; colIndex < nCols; colIndex++){
+            for (int rowIndex = 0; rowIndex < nRows; rowIndex++){
+                int value = Integer.parseInt(postMatrix.getValueAt(rowIndex, colIndex).toString());
+                pn.setPostValue(rowIndex, colIndex, value);        
+            }
+        }
+        //Loads the inital marking (m0) data onto the pn object: Do not modify.      
+        for (int rowIndex = 0; rowIndex < nRows; rowIndex++){
+            int value = Integer.parseInt(m0Matrix.getValueAt(rowIndex, 0).toString());
+            pn.setm0(rowIndex, value);
+        }
+        //Print loaded data for debugging puposes: Do not modify.
+        pn.printPreMatrix();
+        pn.printPostMatrix();
+        pn.printm0Matrix();
+        pn.printIncidenceMatrix();
+        
+        
+        // Drop additional code dpwn below ... //
+        
+        
+    }//GEN-LAST:event_createPNGraphActionPerformed
     
+    
+    private void updateColumnWidth(){
+        TableColumn column;
+        for (int i = 0; i < this.preMatrix.getColumnModel().getColumnCount(); i++) {
+            column = this.preMatrix.getColumnModel().getColumn(i);
+            column.setMaxWidth(30);
+            column = this.postMatrix.getColumnModel().getColumn(i);
+            column.setMaxWidth(30);
+        }
+        preMatrix.updateUI();
+        postMatrix.updateUI();
+    }
+    
+private void removeColumn(int index, JTable myTable){
+    int nRow= myTable.getRowCount();
+    int nCol= myTable.getColumnCount();
+    
+    if((nCol>0)){
+        Object[][] cells= new Object[Integer.parseInt(placesCounter.getValue().toString())][nCol-1];
+        String[] names= new String[nCol-1];
+
+        for(int j=0; j<nCol-1; j++){        
+            names[j]= myTable.getColumnModel().getColumn(j).getHeaderValue().toString();
+            for(int i=0; i<nRow; i++){
+                cells[i][j]= myTable.getValueAt(i, j);
+            }     
+        }
+
+        DefaultTableModel newModel= new DefaultTableModel(cells, names);
+        myTable.setModel(newModel);   
+    }
+}
+
+private void removeRows(int index, JTable myTable){
+    int nRow= myTable.getRowCount();
+    int nCol= myTable.getColumnCount();
+    
+    if(nRow>0){
+        Object[][] cells= new Object[Integer.parseInt(placesCounter.getValue().toString())][nCol];
+        String[] names= new String[nCol];
+
+        for(int j=0; j<nCol; j++){        
+            names[j]= myTable.getColumnModel().getColumn(j).getHeaderValue().toString();
+            for(int i=0; i<nRow-1; i++){
+                cells[i][j]= myTable.getValueAt(i, j);
+            }     
+        }
+
+        DefaultTableModel newModel= new DefaultTableModel(cells, names);
+        myTable.setModel(newModel);   
+    }
+}
+
+
+
+
     /**
      * @param args the command line arguments
      */
@@ -304,27 +482,28 @@ public class Antenna extends javax.swing.JFrame {
                     break;
                 }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Antenna.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmCovertura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Antenna.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmCovertura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Antenna.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmCovertura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Antenna.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmCovertura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Antenna().setVisible(true);
+                new FrmCovertura().setVisible(true);
             }
         });
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Canvas coverageGraph;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton createPNGraph;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JFrame jFrame1;
@@ -338,10 +517,10 @@ public class Antenna extends javax.swing.JFrame {
     private java.awt.Label label3;
     private java.awt.Label label4;
     private java.awt.Label label5;
+    private javax.swing.JTable m0Matrix;
     private javax.swing.JSpinner placesCounter;
     private javax.swing.JTable postMatrix;
-    private javax.swing.JTable preMatrix1;
-    private javax.swing.JTable preMatrix2;
+    private javax.swing.JTable preMatrix;
     private java.awt.Canvas reachGraph;
     private javax.swing.JSpinner transitionsCounter;
     // End of variables declaration//GEN-END:variables
