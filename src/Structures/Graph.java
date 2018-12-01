@@ -52,6 +52,7 @@ public class Graph {
         return null;
     }
 
+    //For Tarjan
     public List<Node> getNodes(){
         return this.nodes;
     }

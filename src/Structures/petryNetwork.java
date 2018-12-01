@@ -33,7 +33,7 @@ public class petryNetwork {
     //For tarjan
     private int index;
     private Stack<Node> S;
-    
+    //
     
     public petryNetwork(int nPlaces, int nTrans){
         // Create the PN object calling this constructor to set up the

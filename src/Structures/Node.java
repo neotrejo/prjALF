@@ -26,6 +26,7 @@ public class Node {
     public int lowlink;
     public boolean visited;
     public boolean onStack;
+    //
     
     public Node(){
         //For Tarjan
