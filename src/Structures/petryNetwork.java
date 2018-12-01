@@ -8,7 +8,21 @@
  * @author martin-trejo
  */
 
+
+package Structures;
+
+
+//Imports needed for Tarjan´s algorithm code
+import java.util.ArrayList;
+import java.util.List;
  
+import static java.lang.Math.*;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+//import Mark.Index;
+import lombok.*;
+
 public class petryNetwork {
     
     private int[][] pre;
@@ -60,7 +74,7 @@ public class petryNetwork {
         if (vk.length != this.nTransitions) throw new RuntimeException("Transitions firing vector (vk) of illigal size.");
 
         nextMarking = multiply(this.incidence , vk);
-        nextMarking = add(mk, nextMarking);
+        nextMarking = addVectors(mk, nextMarking);
         return nextMarking;
     }
     
@@ -80,7 +94,17 @@ public class petryNetwork {
         for (int i=0 ; i<nTransitions;i++){
             activeTans[i] = isVector_nk_LE_nr(marking, getMatrixColumn(pre, i)) ? 1 : 0; 
         }    
-        return activeTans;
+        
+        boolean actTans = false;
+        for (int i =0; i < this.nTransitions; i++){
+            if (activeTans[i]==1)
+                actTans = true;
+        }
+        
+        if (actTans)
+            return activeTans;
+        else
+            return null;
     }
     
     public boolean isVector_nk_LE_nr(int[] mk, int[] mr){
@@ -126,7 +150,7 @@ public class petryNetwork {
     }
     
     // Vectors addition mk+1 = mk + Cvk
-    private static int[] add(int[] mk, int[] Cvk) {
+    private static int[] addVectors(int[] mk, int[] Cvk) {
         int m = mk.length;
         int n = Cvk.length;
         if (m != n) throw new RuntimeException("Illegal vectors dimensions.");
@@ -136,6 +160,7 @@ public class petryNetwork {
         return mk_plus_1;
     }
     
+    
     // Retives a column from a matrix for example pre(place_i).
     public int[] getMatrixColumn(int[][] matrix, int colIndex){
         int[] column = new int[nPlaces];
@@ -144,7 +169,33 @@ public class petryNetwork {
         }
         return column;
     }
-        
+       
+    // Determinacion de propiedades de RP .......... //    
+    public boolean isPNBounded(Graph gcPN){
+        //Ask the graph whether it contains a w in its markings.
+        return true;
+    }       
+    public boolean isPNBlockageFree(Graph gcPN){        
+        //Ask the graph whether it contains an terminal nodes.
+        return true;
+    }    
+    public boolean isPNEstrictlyConservative (Graph gcPN){
+        // Ask the Graph whether the it is bounded and the sum_of_marks is constant across all nodes.
+        return true;
+    } 
+    public boolean isPNRepetitive(Graph gcPN){
+        //Implement tarjan algorithm to find this.
+        //Whether the graph has a directed circuir with all transitions in it.
+        return true;
+    }  
+     public boolean isPNReversible(Graph gcPN){
+        //Implement tarjan algorithm to find this.
+        //Whether all each node is contained in a directed circuit that contains the node n0.
+        //(basically, the graph is a Strongly coneceted graph)
+        return true;
+    }  
+    
+     
     // Set members
     public void setPreValue(int rowIndex, int colIndex, int value){
         pre[rowIndex][colIndex]=value;
