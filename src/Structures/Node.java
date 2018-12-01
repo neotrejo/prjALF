@@ -21,16 +21,42 @@ public class Node {
     private Node parent;
     private String id;
     
+    //For Tarjan
+    public int index;
+    public int lowlink;
+    public boolean visited;
+    public boolean onStack;
+    
+    public Node(){
+        //For Tarjan
+        index = Integer.MAX_VALUE;
+        lowlink = Integer.MAX_VALUE;
+        visited = false;
+        onStack = false;    
+    }
+    
     public Node(String id){
         this.id = id;
         this.transitions = new ArrayList<>();
         this.type = TypeNode.FRONTERA;
         this.parent = null;
+        
+        //For Tarjan
+        index = Integer.MAX_VALUE;
+        lowlink = Integer.MAX_VALUE;
+        visited = false;
+        onStack = false;
     }
     
     public Node(String id, int[] mark){
         this(id);
         this.mark = mark;
+        
+        //For Tarjan
+        index = Integer.MAX_VALUE;
+        lowlink = Integer.MAX_VALUE;
+        visited = false;
+        onStack = false;
     }
     
     public TypeNode getType(){
@@ -94,5 +120,17 @@ public class Node {
     
     public void setWs(){
         //comparar 2 vectores para saber si uno es mayor igual que otro
+    }
+    
+    
+    
+    //For Tarjan
+    public List<Node> getSucessorNodes(){
+        List<Node> succNodes = new ArrayList();
+                
+        transitions.stream().forEach((transition) -> {
+            succNodes.add(transition.getEnd());
+        });
+        return succNodes;
     }
 }

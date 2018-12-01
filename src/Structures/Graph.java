@@ -52,4 +52,7 @@ public class Graph {
         return null;
     }
 
+    public List<Node> getNodes(){
+        return this.nodes;
+    }
 }

@@ -20,8 +20,6 @@ import static java.lang.Math.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-//import Mark.Index;
-import lombok.*;
 
 public class petryNetwork {
     
@@ -30,7 +28,12 @@ public class petryNetwork {
     private int[][] incidence;
     private int[] m0;
     private int nPlaces;
-    private int nTransitions;
+    private int nTransitions;    
+    
+    //For tarjan
+    private int index;
+    private Stack<Node> S;
+    
     
     public petryNetwork(int nPlaces, int nTrans){
         // Create the PN object calling this constructor to set up the
@@ -42,6 +45,9 @@ public class petryNetwork {
         m0 = new int [nPlaces];
         this.nPlaces = nPlaces;
         this.nTransitions = nTrans;
+        //For Tarjan
+        S = new Stack<>();
+        index = 0;
     }
     
     //Computational procedures    
@@ -257,6 +263,77 @@ public class petryNetwork {
             }
             System.out.print("\n");
         }
+    }
+    
+    // Basic Implementation of Tarjan Algorithm.
+               
+    public List<List<Node>> Tarjan(Graph G, Transition E){
+        //output: set of strongly connected components (sets of vertices) 
+        List<List<Node>> sccAll = new ArrayList<>();
+        
+        this.index=0;
+        S.clear();
+             
+        //Iterate through all nodes not visited yet.
+        G.getNodes().stream().forEach((v) -> {
+            if (v.index == Integer.MAX_VALUE){
+                List<Node> scc = strongconnect(v);
+                if(scc != null){                    
+                    sccAll.add(scc);
+                }
+            }
+        });
+        return sccAll;
+    }
+
+    public List<Node> strongconnect(Node v){        
+        List<Node> scc;     // List to hold the nodes of any SCC found.
+        Node wscc;          
+        
+        // Set the depth index for node v to the smallest unused index
+        v.index = index;
+        v.lowlink = index;
+        index = index + 1;
+        S.push(v);
+        v.onStack = true;
+           
+        // Consider successors of v
+        //for each (v, w) in E do
+        v.getSucessorNodes().stream().forEach((w) -> {          
+            if (w.index == Integer.MAX_VALUE){
+              // Successor w has not yet been visited; recurse on it
+              strongconnect(w);
+              v.lowlink  = min(v.lowlink, w.lowlink);
+            }
+            else if (w.onStack){
+              // Successor w is in stack S and hence in the current SCC
+              // If w is not on stack, then (v, w) is a cross-edge in the DFS tree and must be ignored
+              // Note: The next line may look odd - but is correct.
+              // It says w.index not w.lowlink; that is deliberate and from the original paper
+              v.lowlink  = min(v.lowlink, w.index);
+            }
+        });
+
+        // If v is a root node, pop the stack and generate an SCC
+        if (v.lowlink == v.index) {
+            //start a new strongly connected component
+            scc = new ArrayList();
+            do{
+              wscc = S.pop();
+              wscc.onStack = false;
+              //add w_scc to current strongly connected component
+              scc.add(wscc);
+            }while (!wscc.equals(v)); //Test it is not the same node (w != v).
+            //output the current strongly connected component
+            return scc;
+        }
+        return null;               
+        
+        
+    }
+   
+    public boolean isSCCCyclic(List<Node> sCC){
+        return sCC.size() > 1;                    
     }
     
 }
