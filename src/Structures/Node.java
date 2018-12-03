@@ -158,4 +158,17 @@ public class Node {
         });
         return succNodes;
     }
+    /**
+     * 
+     * @return 
+     */
+    public String getMarkString(){
+        String markString = "";
+        
+        for(int i=0; i < Array.getLength(mark); i++){
+            markString += String.valueOf(this.mark[i]) + " ";
+        }
+        
+        return markString;
+    }
 }

@@ -83,7 +83,7 @@ public class petryNetwork {
                 }
                 else{                   //hay transiciones 
                     nk.setType(TypeNode.EXPANDIDO);
-                    for(j = 0; j < Array.getLength(transitions) - 1; j++){
+                    for(j = 0; j < Array.getLength(transitions); j++){
                         if(transitions[j] == 1){
                             //Se crea el nodo nz
                             mz = this.computeNextMarking(nk.getMark(), computeVk(j));
