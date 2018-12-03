@@ -6,7 +6,7 @@
 package Structures;
 
 /**
- *
+ * Class that represent a Transition
  * @author Carlos
  */
 public class Transition {
@@ -17,21 +17,13 @@ public class Transition {
         this.id = id;
     }
     
-    public void setId(String id){
-        this.id = id;
-    }
+    //Getters
+    public String getId(){ return this.id; }
+    public Node getEnd(){ return this.end; }
     
-    public String getId(){
-        return this.id;
-    }
-    
-    public Node getEnd(){
-        return this.end;
-    }
-    
-    public void setEnd(Node end){
-        this.end = end;
-    }
+    //Setters
+    public void setId(String id){ this.id = id; }
+    public void setEnd(Node end){ this.end = end; }
     
             
 }

@@ -6,7 +6,7 @@
 package Structures;
 
 /**
- *
+ * Types states of the node 
  * @author Carlos
  */
 public enum TypeNode {

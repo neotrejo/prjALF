@@ -438,8 +438,11 @@ public class FrmCovertura extends javax.swing.JFrame {
         pn.printm0Matrix();
         pn.printIncidenceMatrix();
         // Drop additional code down below ... //
+        Graph g = pn.getCoverGraph();
         
         makeGraph(pn.getPre(), pn.getPost());
+        
+        
         
     }//GEN-LAST:event_createPNGraphActionPerformed
 

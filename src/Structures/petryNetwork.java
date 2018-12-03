@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
  
 import static java.lang.Math.*;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -28,7 +29,10 @@ public class petryNetwork {
     private int[][] incidence;
     private int[] m0;
     private int nPlaces;
-    private int nTransitions;    
+    private int nTransitions;
+    
+    //Grpah cover
+    private Graph graphCover;
     
     //For tarjan
     private int index;
@@ -45,10 +49,76 @@ public class petryNetwork {
         m0 = new int [nPlaces];
         this.nPlaces = nPlaces;
         this.nTransitions = nTrans;
+        this.graphCover = null;
+        
         //For Tarjan
         S = new Stack<>();
         index = 0;
     }
+    
+    /**
+     * Calculate the graph cover with the matrix pre, post and m0
+    */
+    private void computeCoverGraph(){
+        graphCover = new Graph();
+        int id = 0, j;
+        
+        Node nz = new Node("n" + String.valueOf(id), m0);
+        graphCover.addNode(nz, true);
+        id++;
+        Node nk;
+        int transitions[];
+        int mz[];
+        
+        while((nk = graphCover.getNodeType(TypeNode.FRONTERA)) != null){
+            //Verificar que no sea duplicado
+            if(graphCover.getDuplicateNodeNotFrontera(nk) != null){
+                nk.setType(TypeNode.DUPLICADO);
+            }
+            else{ //el nodo no es duplicado
+                transitions = this.computeActiveTransitions(nk.getMark()); //buscar transiciones habilitadas
+            
+                if(transitions == null){ //no hay transiciones habilitadas para el nodo
+                    nk.setType(TypeNode.TERMINAL);
+                }
+                else{                   //hay transiciones 
+                    nk.setType(TypeNode.EXPANDIDO);
+                    for(j = 0; j < Array.getLength(transitions) - 1; j++){
+                        if(transitions[j] == 1){
+                            //Se crea el nodo nz
+                            mz = this.computeNextMarking(nk.getMark(), computeVk(j));
+                            nz = new Node("n" + String.valueOf(id), mz);// se crea como nodo frontera
+                            graphCover.addNode(nz, false);
+                            id++;
+                            //Se crea transicion para nk --> nz
+                            nk.addTransition(nz, "t"+ String.valueOf(j));
+
+                            //Buscar si no tiene Ws
+                            nz.setWs();
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    /**
+     * Calculate the vector vk from position
+     * returns an array with 0's, and only a 1 in the position of the array 
+     * @param position
+     * @return 
+     */
+    private int[] computeVk(int position){
+       int[] vk = new int[this.nTransitions];  
+       
+       for (int i = 0 ; i<nTransitions; i++){
+           vk[i] = (i == position)?1:0;
+       }
+       
+       return vk;
+    }
+    
     
     //Computational procedures    
     private void computeIncidenceMatrix(){
@@ -60,6 +130,8 @@ public class petryNetwork {
                 incidence[i][j] = post[i][j]-pre[i][j];
             }
         }
+        
+        this.graphCover = null;
     }
     
     public int[] computeNextMarking(int[] mk, int[] vk){
@@ -165,8 +237,7 @@ public class petryNetwork {
             mk_plus_1[i] = mk[i] + Cvk[i];
         return mk_plus_1;
     }
-    
-    
+      
     // Retives a column from a matrix for example pre(place_i).
     public int[] getMatrixColumn(int[][] matrix, int colIndex){
         int[] column = new int[nPlaces];
@@ -225,6 +296,17 @@ public class petryNetwork {
     public int[][] getPost(){return post;}
     public int[][] getIncidence(){return incidence;}
     public int[]   getm0(){return m0;}
+    /**
+     * Get the graph cover and if the value is equal to null, calculate the new
+     * cover graph from the algorithm 
+     * @return 
+     */
+    public Graph getCoverGraph(){
+        if(this.graphCover == null){
+            this.computeCoverGraph();
+        }
+        return this.graphCover;
+    }
     
     // Print Members
     
