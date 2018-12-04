@@ -470,6 +470,13 @@ public class FrmCovertura extends javax.swing.JFrame {
         this.PropertiesTextBox.append("Is PN Strictly conservative? ");
         this.PropertiesTextBox.append(Boolean.toString(pn.isPNEstrictlyConservative())+ "\n");
         
+        this.PropertiesTextBox.append("Is PN Repetitive? ");
+        this.PropertiesTextBox.append(Boolean.toString(pn.isPNRepetitive(scc)) + "\n");
+        
+        this.PropertiesTextBox.append("Is PN Liveness? ");
+        this.PropertiesTextBox.append(Boolean.toString(pn.isPNLiveness(scc)) + "\n");
+        
+        
         this.PropertiesTextBox.append("Number of SCC:?" + Integer.toString(scc.size())+ "\n");
         
         for (int i=0 ; i < scc.size(); i++){
