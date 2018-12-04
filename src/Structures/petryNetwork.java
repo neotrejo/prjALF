@@ -534,8 +534,41 @@ public class petryNetwork {
         
     }
    
-    public boolean isSCCCyclic(List<Node> sCC){
-        return sCC.size() > 1;                    
+    public boolean isPNReversible(List<List<Node>> sccList, Graph graph){
+        
+        List<List<Node>> sccListWithn0 = new ArrayList<List<Node>>();
+        
+        boolean hasAllNodes=true;
+        boolean isNodeInSCC;
+        
+        //Get SCC's that contain n0.
+        for(List<Node> scc: sccList){
+            //Get the nodes in each scc.
+            for(Node node: scc){
+                if(node.getId().compareTo("n1")==0){
+                    sccListWithn0.add(scc);
+                    break;
+                }
+            }
+        }
+        
+        nodesLoop:
+        for(Node node: graph.getNodes()){
+            isNodeInSCC = false;
+            sccLoop:for(List<Node> scc: sccListWithn0){
+                        for(Node sccNode: scc){
+                            if(sccNode.getId().compareTo(node.getId())==0){
+                                isNodeInSCC = true;
+                                break sccLoop;
+                            }
+                        }
+                    }
+            hasAllNodes = hasAllNodes & isNodeInSCC ;
+            if (!hasAllNodes)
+                break;
+        }
+               
+        return hasAllNodes;                    
     }
     
 }

@@ -476,8 +476,7 @@ public class FrmCovertura extends javax.swing.JFrame {
             this.PropertiesTextBox.append("Nodes in SCC[" + Integer.toString(i+1) +"]: ");
             for (int j=0 ; j < scc.get(i).size(); j++){
                 Node node = scc.get(i).get(j);
-                this.PropertiesTextBox.append("\n" + node.getId());
-                
+                this.PropertiesTextBox.append(node.getId() + ", ");                
             }
         }
         
