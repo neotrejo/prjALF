@@ -62,7 +62,7 @@ public class petryNetwork {
      */
     private void computeTarjanCoverGraph(){
         gCTarjan = new Graph();
-        int id = 1, j;
+        int id = 0, j;
         
         Node nz = new Node("n" + String.valueOf(id), m0);
         gCTarjan.addNode(nz, true);
@@ -593,7 +593,7 @@ public class petryNetwork {
         for(List<Node> scc: sccList){
             //Get the nodes in each scc.
             for(Node node: scc){
-                if(node.getId().compareTo("n1")==0){
+                if(node.getId().compareTo("n0")==0){
                     sccListWithn0.add(scc);
                     break;
                 }
