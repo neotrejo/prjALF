@@ -370,12 +370,60 @@ public class petryNetwork {
         // Ask the Graph whether the it is bounded and the sum_of_marks is constant across all nodes.
         return graphCover.isEstrictlyConservative();
     } 
-    public boolean isPNRepetitive(){
+    public boolean isPNRepetitive(List<List<Node>> scc){
+        
+        for (List<Node> circuit : scc) {
+            if (this.haveAllTransitions(circuit)) {
+                return true;
+            }
+        }
         //Implement tarjan algorithm to find this.
         //Whether the graph has a directed circuir with all transitions in it.
-        return true;
+        return false;
     }  
-     public boolean isPNReversible(){
+    
+    /***
+     * Recieve a list of circuits to decide if wheter the graph has all the 
+     * circuits with all transitions in it 
+     * @param scc
+     * @return 
+     */
+    public boolean isPNLiveness(List<List<Node>> scc){
+        for (List<Node> circuit : scc) {
+            if (!this.haveAllTransitions(circuit)) {
+                return false;
+            }
+        }
+        //Implement tarjan algorithm to find this.
+        //Whether the graph has a directed circuir with all transitions in it.
+        return false;
+    }
+    
+    /**
+     * Decide if the circuit sent have all transitions
+     * @param circuit
+     * @return 
+     */
+    private boolean haveAllTransitions(List<Node> circuit){
+        List<String> trans = new ArrayList<>();
+        
+        for (Node node : circuit) {
+            for (Transition transition : node.getTransitions()) {
+                if(circuit.contains(transition.getEnd())){
+                    if(!trans.contains(transition.getId())){
+                        trans.add(transition.getId());
+                    }
+                }
+            }
+        }
+        
+        return (trans.size() == this.nTransitions);
+    }
+    
+    
+    
+    
+    public boolean isPNReversible(){
         //Implement tarjan algorithm to find this.
         //Whether all each node is contained in a directed circuit that contains the node n0.
         //(basically, the graph is a Strongly coneceted graph)
