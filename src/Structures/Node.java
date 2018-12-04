@@ -163,12 +163,23 @@ public class Node {
      * @return 
      */
     public String getMarkString(){
-        String markString = "";
+        String markString = id+": ";
         
         for(int i=0; i < Array.getLength(mark); i++){
-            markString += String.valueOf(this.mark[i]) + " ";
+            if(this.mark[i]==0||this.mark[i]==1){
+                markString += String.valueOf(this.mark[i]) + " ";
+            }else{
+                markString += "w ";
+            }
         }
-        
+        if(this.getType()==TypeNode.DUPLICADO){
+                markString+="(D)";
+            }else if(this.getType()==TypeNode.EXPANDIDO){
+                markString+="(E)";
+            }else if(this.getType()==TypeNode.TERMINAL){
+                markString+="(T)";
+            }
+
         return markString;
     }
 }

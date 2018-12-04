@@ -438,15 +438,49 @@ public class FrmCovertura extends javax.swing.JFrame {
         pn.printm0Matrix();
         pn.printIncidenceMatrix();
         // Drop additional code down below ... //
-        Graph gcover = pn.getCoverGraph();
+        Graph gcover = pn.getCoverGraph();    
         
         makeGraph(pn.getPre(), pn.getPost());
+        makeCoverGraph(gcover);
         
         
         
     }//GEN-LAST:event_createPNGraphActionPerformed
+    public void makeCoverGraph(Graph gcover) {
+        System.out.println(""+gcover.getNodes().size());
+        
+        String nombreArchivo = "CoverGraph";
+        String content = "digraph CoverGraph          {\n"
+                //+ "rankdir=LR;"
+                + //girar a la derecha
+                //"# page = \"8.2677165,11.692913\" ;\n" +
+                "ratio = \"auto\" ;\n"
+                + "mincross = 6.0 ;\n";
 
-    public static void makeGraph(int[][] mpre, int[][] mpost) {
+        for(int i=0;i<gcover.getNodes().size();i++){
+            content = content + "\"" + gcover.getNodes().get(i).getMarkString() + "\" [shape=box,label=\"" + gcover.getNodes().get(i).getMarkString() + "\",height=.1,width=.1] ;\n";
+        }
+        
+        for(int i=0;i<gcover.getNodes().size();i++){
+            //System.out.println(""+gcover.getNodes().get(i).getParent().getMarkString()+"->"+gcover.getNodes().get(i).getMarkString()+"sda");           
+            for(int j=0;j<gcover.getNodes().get(i).getTransitions().size();j++){
+                //System.out.println(""+gcover.getNodes().get(i).getMarkString()+"->"+gcover.getNodes().get(i).getTransitions().get(j).getEnd().getMarkString()+" : "+gcover.getNodes().get(i).getTransitions().get(j).getId());
+                content = content + "\"" + gcover.getNodes().get(i).getMarkString() + "\" -> \"" + gcover.getNodes().get(i).getTransitions().get(j).getEnd().getMarkString() + "\" [dir=normal,weight=1,label = \""+gcover.getNodes().get(i).getTransitions().get(j).getId()+"\"] ;\n";
+            }
+        }
+              
+        content = content + "}";
+        //System.out.print(content);
+        FileUtils.write(nombreArchivo, content, "txt");
+        FileUtils.generateImg(nombreArchivo, "png");
+
+        //new GraphFrame(nombreArchivo);
+        panel2.removeAll();
+        panel2.add(new GraphJPanel("CoverGraph",panel2.getWidth(),panel2.getHeight()));
+        panel2.repaint();
+        
+    }
+    public void makeGraph(int[][] mpre, int[][] mpost) {
         String nombreArchivo = "PetriNetwork";
         String content = "digraph PetriNetwork          {\n"
                 + "rankdir=LR;"
@@ -460,26 +494,26 @@ public class FrmCovertura extends javax.swing.JFrame {
 
         for (int i = 0; i < pre.length; i++) {
             //Se instancias las P
-            content = content + "\"P" + (i + 1) + "\" [shape=circle  , regular=1,style=filled,fillcolor=white] ;\n";
+            content = content + "\"P" + (i) + "\" [shape=circle  , regular=1,style=filled,fillcolor=white] ;\n";
         }
         for (int i = 0; i < pre[0].length; i++) {
             //Se instancias las T
-            content = content + "\"t" + (i + 1) + "\" [shape=box,label=\"t" + (i + 1) + "\",height=.1,width=.1] ;\n";
+            content = content + "\"t" + (i) + "\" [shape=box,label=\"t" + (i) + "\",height=.1,width=.1] ;\n";
         }
         for (int i = 0; i < pre.length; i++) {
             //Se Instancian las P
             for (int j = 0; j < pre[0].length; j++) {
                 //Se generan las transiciones
                 if (pre[i][j] == 1) {//de P's  a T's
-                    content = content + "\"P" + (i + 1) + "\" -> \"t" + (j + 1) + "\" [dir=normal,weight=1] ;\n";
+                    content = content + "\"P" + (i) + "\" -> \"t" + (j) + "\" [dir=normal,weight=1] ;\n";
                 }
                 if (post[i][j] == 1) {//de T's  a P's
-                    content = content + "\"t" + (j + 1) + "\" -> \"P" + (i + 1) + "\" [dir=normal,weight=1] ;\n";
+                    content = content + "\"t" + (j) + "\" -> \"P" + (i) + "\" [dir=normal,weight=1] ;\n";
                 }
             }
         }
         content = content + "}";
-        System.out.print(content);
+        //System.out.print(content);
         FileUtils.write(nombreArchivo, content, "txt");
         FileUtils.generateImg(nombreArchivo, "png");
 
@@ -601,5 +635,4 @@ public class FrmCovertura extends javax.swing.JFrame {
     private javax.swing.JTable preMatrix;
     private javax.swing.JSpinner transitionsCounter;
     // End of variables declaration//GEN-END:variables
-
 }

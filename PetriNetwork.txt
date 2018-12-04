@@ -1,0 +1,19 @@
+digraph PetriNetwork          {
+rankdir=LR;ratio = "auto" ;
+mincross = 6.0 ;
+"P0" [shape=circle  , regular=1,style=filled,fillcolor=white] ;
+"P1" [shape=circle  , regular=1,style=filled,fillcolor=white] ;
+"P2" [shape=circle  , regular=1,style=filled,fillcolor=white] ;
+"t0" [shape=box,label="t0",height=.1,width=.1] ;
+"t1" [shape=box,label="t1",height=.1,width=.1] ;
+"t2" [shape=box,label="t2",height=.1,width=.1] ;
+"P0" -> "t0" [dir=normal,weight=1] ;
+"t0" -> "P0" [dir=normal,weight=1] ;
+"P0" -> "t1" [dir=normal,weight=1] ;
+"t0" -> "P1" [dir=normal,weight=1] ;
+"t1" -> "P1" [dir=normal,weight=1] ;
+"P1" -> "t2" [dir=normal,weight=1] ;
+"t1" -> "P2" [dir=normal,weight=1] ;
+"P2" -> "t2" [dir=normal,weight=1] ;
+"t2" -> "P2" [dir=normal,weight=1] ;
+}
