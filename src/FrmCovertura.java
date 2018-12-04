@@ -473,6 +473,9 @@ public class FrmCovertura extends javax.swing.JFrame {
         this.PropertiesTextBox.append("Is PN Repetitive? ");
         this.PropertiesTextBox.append(Boolean.toString(pn.isPNRepetitive(scc)) + "\n");
         
+        this.PropertiesTextBox.append("Is PN Reversible? ");
+        this.PropertiesTextBox.append(Boolean.toString(pn.isPNReversible(scc, pn.getTarjanCoverGraph())) + "\n");
+        
         this.PropertiesTextBox.append("Is PN Liveness? ");
         this.PropertiesTextBox.append(Boolean.toString(pn.isPNLiveness(scc)) + "\n");
         
