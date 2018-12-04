@@ -25,5 +25,8 @@ public class Transition {
     public void setId(String id){ this.id = id; }
     public void setEnd(Node end){ this.end = end; }
     
+    public void redirectTransitionTo(Node node){
+        end= node;        
+    }
             
 }

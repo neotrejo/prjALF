@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class tha represents a Graph
+ * Class that represents a Graph
  * @author Carlos
  */
 public class Graph {
@@ -32,6 +32,20 @@ public class Graph {
             this.setHead(node);
     }
     
+    public boolean removeNode(Node node){
+        
+        for (int i=0; i < nodes.size(); i++){
+            //If Id strings match.
+            if(nodes.get(i).getId().compareTo(node.getId())== 0){
+                nodes.remove(i);
+                return true;
+            }                
+        }
+        return false;
+    }
+    
+    
+   
     /**
      * Set a node HEAD of the Graph
      * @param node 
@@ -56,7 +70,7 @@ public class Graph {
     }
     
     /**
-     * Get a node that haves TYPE other than Frontera and the mark is equal to the sender Node's mark
+     * Get a node that has TYPE other than Frontera and the mark is equal to the sender Node's mark
      * @param node
      * @return 
      */
@@ -71,6 +85,33 @@ public class Graph {
         return null;
     }
 
+    
+    public Node getDuplicateNodeExpandido(Node node){
+        for (int i = 0; i <= this.nodes.size() - 1; i++) {
+            if(this.nodes.get(i) != node && 
+               this.nodes.get(i).getType() == TypeNode.EXPANDIDO &&
+               this.nodes.get(i).hasThisMark(node.getMark()))
+                return this.nodes.get(i);
+        }
+        
+        return null;
+    }
+        
+        
+    /**
+     * Looks for a existing Node in the graph with a specific Marking.
+    */    
+    public Node getNodeByMarking(int[] mark){
+        Node myNode;
+        for (int i = 0; i < this.nodes.size(); i++) {
+            myNode = this.nodes.get(i);
+            if(myNode.hasThisMark(mark))
+                return myNode;
+        }        
+        return null;
+    }
+    
+    
     /**
      * Get the set of nodes
      * @return 

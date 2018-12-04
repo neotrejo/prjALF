@@ -17,7 +17,8 @@ public class Node {
     public static final int W = Integer.MAX_VALUE;
     private TypeNode type;
     private int mark[];
-    private List<Transition> transitions;
+    private List<Transition> postTransitions;
+    private List<Transition> preTransitions;    
     private Node parent;
     private String id;
     
@@ -39,7 +40,8 @@ public class Node {
     public Node(String id){
         this();
         this.id = id;
-        this.transitions = new ArrayList<>();
+        this.postTransitions = new ArrayList<>();
+        this.preTransitions = new ArrayList<>();
         this.type = TypeNode.FRONTERA;
         this.parent = null;
     }
@@ -53,7 +55,8 @@ public class Node {
     public TypeNode getType(){ return this.type; }
     public int[] getMark(){ return this.mark; }
     public Node getParent(){ return this.parent; }
-    public List<Transition> getTransitions(){ return this.transitions; }
+    public List<Transition> getTransitions(){ return this.postTransitions; }
+    public List<Transition> getPreTransitions(){ return this.preTransitions; }
     public String getId(){ return this.id; }
     
     //Setters
@@ -67,11 +70,54 @@ public class Node {
      * @param node
      * @param nameT 
      */
-    public void addTransition(Node node, String nameT){
+    public Transition addTransition(Node node, String nameT){
         Transition t = new Transition(nameT);
         t.setEnd(node);
-        this.transitions.add(t);
+        this.postTransitions.add(t);
         node.setParent(this);
+        return t;
+    }
+    
+    /**
+     * Add pre transitions to this node (Input Transitions)
+     * @param t
+     * @return 
+     */
+    public Transition addPreTransition(Transition t){       
+        this.preTransitions.add(t);        
+        return t;
+    }
+    
+    /**
+     * Remove a transition with the sender name and the sender node
+     * @param node
+     * @param nameT 
+     */
+    public Boolean removeTransition(String nameT){               
+        
+        for(int i=0; i<this.postTransitions.size(); i++ ){
+            if(this.postTransitions.get(i).getId().compareTo(nameT)==0){ //If postTransitions names match
+               this.postTransitions.remove(i);
+               return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Remove a pre transition with the sender name and the sender node
+     * @param node
+     * @param nameT 
+     */
+    public Boolean removePreTransition(String nameT){               
+        
+        for(int i=0; i<this.preTransitions.size(); i++ ){
+            if(this.preTransitions.get(i).getId().compareTo(nameT)==0){ //If preTransitions names match
+               this.preTransitions.remove(i);
+               return true;
+            }
+        }
+        return false;
     }
     
     /**
@@ -185,9 +231,9 @@ public class Node {
      * @return 
      */
     public List<Node> getSucessorNodes(){
-        List<Node> succNodes = new ArrayList();
+        List<Node> succNodes = new ArrayList<>();
                 
-        transitions.stream().forEach((transition) -> {
+        postTransitions.stream().forEach((transition) -> {
             succNodes.add(transition.getEnd());
         });
         return succNodes;

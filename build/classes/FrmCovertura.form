@@ -107,10 +107,7 @@
                               <Component id="placesCounter" min="-2" pref="52" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="createPNGraph" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jButton2" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="createPNGraph" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -158,12 +155,10 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="placesCounter" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="label2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="label2" min="-2" max="-2" attributes="0"/>
+                              <Component id="placesCounter" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="createPNGraph" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
@@ -207,21 +202,46 @@
             <Component class="javax.swing.JTable" name="postMatrix">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="3" rowCount="3">
-                    <Column editable="true" title="t0" type="java.lang.Object">
-                      <Data value="1"/>
-                      <Data value="1"/>
-                      <Data value="0"/>
-                    </Column>
+                  <Table columnCount="5" rowCount="6">
                     <Column editable="true" title="t1" type="java.lang.Object">
                       <Data value="0"/>
                       <Data value="1"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
                       <Data value="1"/>
+                      <Data value="0"/>
                     </Column>
                     <Column editable="true" title="t2" type="java.lang.Object">
                       <Data value="0"/>
                       <Data value="0"/>
                       <Data value="1"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                    </Column>
+                    <Column editable="true" title="t3" type="java.lang.Object">
+                      <Data value="1"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                    </Column>
+                    <Column editable="true" title="t4" type="java.lang.Object">
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="1"/>
+                    </Column>
+                    <Column editable="true" title="t5" type="java.lang.Object">
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="1"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
                     </Column>
                   </Table>
                 </Property>
@@ -252,10 +272,10 @@
         <Component class="javax.swing.JSpinner" name="transitionsCounter">
           <Properties>
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel initial="3" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+              <SpinnerModel initial="5" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
             <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="3" type="code"/>
+              <Connection code="5" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -265,10 +285,11 @@
         <Component class="javax.swing.JSpinner" name="placesCounter">
           <Properties>
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel initial="3" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+              <SpinnerModel initial="6" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="3" type="code"/>
+              <Connection code="6" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -285,13 +306,11 @@
             <Component class="javax.swing.JTable" name="preMatrix">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="3" rowCount="3">
-                    <Column editable="true" title="t0" type="java.lang.Object">
+                  <Table columnCount="5" rowCount="6">
+                    <Column editable="true" title="t1" type="java.lang.Object">
                       <Data value="1"/>
                       <Data value="0"/>
                       <Data value="0"/>
-                    </Column>
-                    <Column editable="true" title="t1" type="java.lang.Object">
                       <Data value="1"/>
                       <Data value="0"/>
                       <Data value="0"/>
@@ -299,6 +318,33 @@
                     <Column editable="true" title="t2" type="java.lang.Object">
                       <Data value="0"/>
                       <Data value="1"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                    </Column>
+                    <Column editable="true" title="t3" type="java.lang.Object">
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="1"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                    </Column>
+                    <Column editable="true" title="t4" type="java.lang.Object">
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="1"/>
+                      <Data value="0"/>
+                    </Column>
+                    <Column editable="true" title="t5" type="java.lang.Object">
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
                       <Data value="1"/>
                     </Column>
                   </Table>
@@ -337,8 +383,11 @@
             <Component class="javax.swing.JTable" name="m0Matrix">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="1" rowCount="3">
+                  <Table columnCount="1" rowCount="6">
                     <Column editable="true" title="MARKING" type="java.lang.Object">
+                      <Data value="1"/>
+                      <Data value="0"/>
+                      <Data value="0"/>
                       <Data value="1"/>
                       <Data value="0"/>
                       <Data value="0"/>
@@ -369,17 +418,17 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createPNGraphActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Clear PN Config."/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.Box$Filler" name="filler1">
           <AuxValues>
             <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.HorizontalStrut"/>
           </AuxValues>
         </Component>
         <Component class="java.awt.TextArea" name="PropertiesTextBox">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="14" style="0"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="java.awt.Label" name="label6">
           <Properties>
@@ -402,9 +451,6 @@
         </Property>
         <Property name="autoscrolls" type="boolean" value="true"/>
       </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Coverage Graph"/>
-      </AccessibilityProperties>
 
       <Layout>
         <DimensionLayout dim="0">

@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
+
 public class petryNetwork {
     
     private int[][] pre;
@@ -33,7 +34,7 @@ public class petryNetwork {
     
     //Grpah cover
     private Graph graphCover;
-    
+    private Graph gCTarjan;
     //For tarjan
     private int index;
     private Stack<Node> S;
@@ -57,11 +58,103 @@ public class petryNetwork {
     }
     
     /**
+     * Computes Coverage Graph for Tarjan Algorithm Processing.
+     */
+    private void computeTarjanCoverGraph(){
+        gCTarjan = new Graph();
+        int id = 1, j;
+        
+        Node nz = new Node("n" + String.valueOf(id), m0);
+        gCTarjan.addNode(nz, true);
+        id++;
+        Node nk, dupNode;
+        int transitions[];
+        int mz[];
+        
+        
+        while((nk = gCTarjan.getNodeType(TypeNode.FRONTERA)) != null){
+            //Verificar que no sea duplicado
+            if(gCTarjan.getDuplicateNodeNotFrontera(nk) != null){
+                nk.setType(TypeNode.DUPLICADO);                                
+            }
+            else{ //el nodo no es duplicado
+                transitions = this.computeActiveTransitions(nk.getMark()); //buscar transiciones habilitadas
+            
+                if(transitions == null){ //no hay transiciones habilitadas para el nodo
+                    nk.setType(TypeNode.TERMINAL);
+                }
+                else{                   //hay transiciones 
+                    nk.setType(TypeNode.EXPANDIDO);
+                    for(j = 0; j < Array.getLength(transitions); j++){
+                        if(transitions[j] == 1){
+                            //Se crea el nodo nz
+                            mz = this.computeNextMarking(nk.getMark(), computeVk(j));
+                            nz = new Node("n" + String.valueOf(id), mz);// se crea como nodo frontera
+                            gCTarjan.addNode(nz, false);
+                            id++;
+                            //Se crea transicion para nk --> nz
+                            Transition t = nk.addTransition(nz, "t"+ String.valueOf(j+1));
+                            //Buscar si no tiene Ws
+                            nz.setWs();                           
+                            
+                            /*dupNode = gCTarjan.getDuplicateNodeNotFrontera(nz);
+                            
+                            if(dupNode != null){                                
+                                t.redirectTransitionTo(dupNode);
+                                if(!gCTarjan.removeNode(nz))
+                                    System.out.print("Error: Could not remove node with Id:" + nz.getId());
+                                else
+                                    System.out.print("Seccessfully remove node with Id:" + nz.getId());
+                                dupNode.setType(TypeNode.DUPLICADO);
+                            } */              
+                        }
+                    }
+                }
+            }
+            
+        }
+        connectTarjanDuplicatesCoverGraph();
+    }
+    private void connectTarjanDuplicatesCoverGraph(){
+        Node dupNode;        
+        Node parentNode;
+        Transition redirTrans;        
+        List<Node> allNodes;
+        List<Node> duplicateNodes = new ArrayList<>();
+        
+        if(gCTarjan== null){            
+            this.computeTarjanCoverGraph();            
+        }        
+        allNodes = gCTarjan.getNodes();
+        //Get duplicate Nodes only
+        
+        for(Node myNode : allNodes){ 
+            if(myNode.getType()==TypeNode.DUPLICADO)
+                duplicateNodes.add(myNode);
+        }
+        
+        for(Node myNode : duplicateNodes){   
+            dupNode = gCTarjan.getDuplicateNodeExpandido(myNode);
+            //Find pre Transition that connect to myNode                    
+            parentNode = myNode.getParent();
+            for (int j=0; j< parentNode.getTransitions().size(); j++){
+                //Identify Transition that connects to myNode at its end
+                redirTrans = parentNode.getTransitions().get(j);
+                if (myNode.getId().compareTo(redirTrans.getEnd().getId())==0){
+                    redirTrans.redirectTransitionTo(dupNode); //Redirects transition to matching node                    
+                    gCTarjan.removeNode(myNode);
+                }
+            }
+
+            
+        }   
+    }
+    /**
      * Calculate the graph cover with the matrix pre, post and m0
     */
     private void computeCoverGraph(){
         graphCover = new Graph();
-        int id = 0, j;
+        int id = 1, j;
         
         Node nz = new Node("n" + String.valueOf(id), m0);
         graphCover.addNode(nz, true);
@@ -91,8 +184,8 @@ public class petryNetwork {
                             graphCover.addNode(nz, false);
                             id++;
                             //Se crea transicion para nk --> nz
-                            nk.addTransition(nz, "t"+ String.valueOf(j));
-
+                            Transition t = nk.addTransition(nz, "t"+ String.valueOf(j+1));
+                            nz.addPreTransition(t);
                             //Buscar si no tiene Ws
                             nz.setWs();
                         }
@@ -248,23 +341,34 @@ public class petryNetwork {
     }
        
     // Determinacion de propiedades de RP .......... //    
-    public int isPNBounded(){
+    public boolean isPNBounded(){
+        //Ask the graph whether it contains a w in its markings.
+
+        int maxBound;
+        if(this.graphCover != null){
+            return (this.graphCover.getMaxBound() != Node.W);
+        }
+        return false;
+    }      
+    // Determinacion de propiedades de RP .......... //    
+    public int getMaxBoundValue(){
+    
         if(this.graphCover != null){
             return this.graphCover.getMaxBound();
         }
         //Ask the graph whether it contains a w in its markings.
         return 0;
-    }       
-    public boolean isPNBlockage(){        
+    } 
+    public boolean isPNBlockageFree(){        
         if(this.graphCover != null){
-            return this.graphCover.hasTerminalNodes();
+            return !(this.graphCover.hasTerminalNodes());
         }
         
-        return false;
+        return true;
     }    
     public boolean isPNEstrictlyConservative (){
         // Ask the Graph whether the it is bounded and the sum_of_marks is constant across all nodes.
-        return true;
+        return graphCover.isEstrictlyConservative();
     } 
     public boolean isPNRepetitive(){
         //Implement tarjan algorithm to find this.
@@ -314,6 +418,15 @@ public class petryNetwork {
         return this.graphCover;
     }
     
+    /**
+     * Computes the CoverageGraph With Loops to duplicate nodes (for Tarjan Algorithms)
+     */
+     public Graph getTarjanCoverGraph(){
+        if(this.gCTarjan == null){
+            this.computeTarjanCoverGraph();            
+        }
+        return this.gCTarjan;
+    }
     // Print Members
     
     public void printPreMatrix(){
@@ -355,14 +468,15 @@ public class petryNetwork {
     
     // Basic Implementation of Tarjan Algorithm.
                
-    public List<List<Node>> Tarjan(Graph G, Transition E){
+    public List<List<Node>> Tarjan(Graph G){
         //output: set of strongly connected components (sets of vertices) 
         List<List<Node>> sccAll = new ArrayList<>();
-        
-        this.index=0;
+                   
+        this.index=1;
         S.clear();
              
         //Iterate through all nodes not visited yet.
+        System.out.print("\nTotal number of nodes: " + Integer.toString(G.getNodes().size()));
         G.getNodes().stream().forEach((v) -> {
             if (v.index == Integer.MAX_VALUE){
                 List<Node> scc = strongconnect(v);

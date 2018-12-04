@@ -37,6 +37,9 @@ import Structures.*;
 import java.awt.Panel;
 import javax.swing.ImageIcon;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FrmCovertura extends javax.swing.JFrame {
 
     /**
@@ -71,7 +74,6 @@ public class FrmCovertura extends javax.swing.JFrame {
         m0Matrix = new javax.swing.JTable();
         label5 = new java.awt.Label();
         createPNGraph = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0));
         PropertiesTextBox = new java.awt.TextArea();
         label6 = new java.awt.Label();
@@ -106,12 +108,15 @@ public class FrmCovertura extends javax.swing.JFrame {
 
         postMatrix.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "0", "0"},
-                {"1", "1", "0"},
-                {"0", "1", "1"}
+                {"0", "0", "1", "0", "0"},
+                {"1", "0", "0", "0", "0"},
+                {"0", "1", "0", "0", "0"},
+                {"0", "0", "0", "0", "1"},
+                {"1", "0", "0", "0", "0"},
+                {"0", "0", "0", "1", "0"}
             },
             new String [] {
-                "t0", "t1", "t2"
+                "t1", "t2", "t3", "t4", "t5"
             }
         ));
         postMatrix.setRowHeight(18);
@@ -125,16 +130,17 @@ public class FrmCovertura extends javax.swing.JFrame {
         label2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label2.setText("PLACES");
 
-        transitionsCounter.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(3), Integer.valueOf(1), null, Integer.valueOf(1)));
-        transitionsCounter.setValue(3);
+        transitionsCounter.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(5), Integer.valueOf(1), null, Integer.valueOf(1)));
+        transitionsCounter.setValue(5);
         transitionsCounter.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 transitionsCounterStateChanged(evt);
             }
         });
 
-        placesCounter.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(3), Integer.valueOf(1), null, Integer.valueOf(1)));
-        placesCounter.setValue(3);
+        placesCounter.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(6), Integer.valueOf(1), null, Integer.valueOf(1)));
+        placesCounter.setToolTipText("");
+        placesCounter.setValue(6);
         placesCounter.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 placesCounterStateChanged(evt);
@@ -143,12 +149,15 @@ public class FrmCovertura extends javax.swing.JFrame {
 
         preMatrix.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "1", "0"},
-                {"0", "0", "1"},
-                {"0", "0", "1"}
+                {"1", "0", "0", "0", "0"},
+                {"0", "1", "0", "0", "0"},
+                {"0", "0", "1", "0", "0"},
+                {"1", "0", "0", "0", "0"},
+                {"0", "0", "0", "1", "0"},
+                {"0", "0", "0", "0", "1"}
             },
             new String [] {
-                "t0", "t1", "t2"
+                "t1", "t2", "t3", "t4", "t5"
             }
         ));
         preMatrix.setRowHeight(18);
@@ -164,6 +173,9 @@ public class FrmCovertura extends javax.swing.JFrame {
 
         m0Matrix.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {"1"},
+                {"0"},
+                {"0"},
                 {"1"},
                 {"0"},
                 {"0"}
@@ -187,7 +199,7 @@ public class FrmCovertura extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Clear PN Config.");
+        PropertiesTextBox.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
         label6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label6.setText("PROPERTIES");
@@ -207,9 +219,7 @@ public class FrmCovertura extends javax.swing.JFrame {
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(transitionsCounter)
                             .add(placesCounter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 52, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                        .add(org.jdesktop.layout.GroupLayout.TRAILING, createPNGraph, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(jButton2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .add(createPNGraph))
                 .add(40, 40, 40)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(label3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -246,11 +256,9 @@ public class FrmCovertura extends javax.swing.JFrame {
                             .add(transitionsCounter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(placesCounter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(label2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(label2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(placesCounter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(jButton2)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(createPNGraph))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(label3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -326,7 +334,6 @@ public class FrmCovertura extends javax.swing.JFrame {
         );
 
         jPanel1.getAccessibleContext().setAccessibleName("Pre_Matrix");
-        jPanel2.getAccessibleContext().setAccessibleName("Coverage Graph");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -334,8 +341,8 @@ public class FrmCovertura extends javax.swing.JFrame {
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // Set columns width in preMatrix and postMatrix tables
         updateColumnWidth();
-        transitionsCounter.setValue(3);
-        placesCounter.setValue(3);
+        //transitionsCounter.setValue(3);
+        //placesCounter.setValue(3);
 
     }//GEN-LAST:event_formComponentShown
 
@@ -351,8 +358,8 @@ public class FrmCovertura extends javax.swing.JFrame {
         nCol = (nCol < 1) ? 1 : nCol;
 
         if (nCol < colVal) { //Agregar Columnas
-            preMatrixModel.addColumn("t" + (nCol));
-            postMatrixModel.addColumn("t" + (nCol));
+            preMatrixModel.addColumn("t" + (nCol+1));
+            postMatrixModel.addColumn("t" + (nCol+1));
 
             for (int i = 0; i < preMatrixModel.getRowCount(); i++) {
                 preMatrixModel.setValueAt("0", i, preMatrixModel.getColumnCount() - 1);
@@ -433,12 +440,46 @@ public class FrmCovertura extends javax.swing.JFrame {
         pn.printPostMatrix();
         pn.printm0Matrix();
         pn.printIncidenceMatrix();
-        // Drop additional code down below ... //
+        // Drop additional code down below .................................. //
         Graph gcover = pn.getCoverGraph();    
-        
+        Graph gcoverTarjan = pn.getTarjanCoverGraph();    
+    
         makeGraph(pn.getPre(), pn.getPost());
-        makeCoverGraph(gcover);
+        //makeCoverGraph(gcover);
+        makeCoverGraph(gcoverTarjan);
         
+        //Compute Strongly Connected Components...............................//
+        List<List<Node>> scc = pn.Tarjan(gcoverTarjan);
+               
+        
+        //Print PN properties...................................................
+        this.PropertiesTextBox.setText("");
+        this.PropertiesTextBox.append("Is PN Bounded? ");
+        this.PropertiesTextBox.append(Boolean.toString(pn.isPNBounded()) + "\n");
+        
+        this.PropertiesTextBox.append("PN Bound? ");
+        if (pn.getMaxBoundValue()== Integer.MAX_VALUE){
+            this.PropertiesTextBox.append("Inf" + "\n");
+        }else{
+            this.PropertiesTextBox.append(Integer.toString(pn.getMaxBoundValue()) + "\n");
+        }
+        
+        this.PropertiesTextBox.append("Is PN Blockage Free? ");
+        this.PropertiesTextBox.append(Boolean.toString(pn.isPNBlockageFree()) + "\n");
+        
+        this.PropertiesTextBox.append("Is PN Strictly conservative? ");
+        this.PropertiesTextBox.append(Boolean.toString(pn.isPNEstrictlyConservative())+ "\n");
+        
+        this.PropertiesTextBox.append("Number of SCC:?" + Integer.toString(scc.size())+ "\n");
+        
+        for (int i=0 ; i < scc.size(); i++){
+            this.PropertiesTextBox.append("Nodes in SCC[" + Integer.toString(i+1) +"]: ");
+            for (int j=0 ; j < scc.get(i).size(); j++){
+                Node node = scc.get(i).get(j);
+                this.PropertiesTextBox.append("\n" + node.getId());
+                
+            }
+        }
         
         
     }//GEN-LAST:event_createPNGraphActionPerformed
@@ -490,21 +531,21 @@ public class FrmCovertura extends javax.swing.JFrame {
 
         for (int i = 0; i < pre.length; i++) {
             //Se instancias las P
-            content = content + "\"P" + (i) + "\" [shape=circle  , regular=1,style=filled,fillcolor=white] ;\n";
+            content = content + "\"P" + (i+1) + "\" [shape=circle  , regular=1,style=filled,fillcolor=white] ;\n";
         }
         for (int i = 0; i < pre[0].length; i++) {
             //Se instancias las T
-            content = content + "\"t" + (i) + "\" [shape=box,label=\"t" + (i) + "\",height=.1,width=.1] ;\n";
+            content = content + "\"t" + (i+1) + "\" [shape=box,label=\"t" + (i+1) + "\",height=.1,width=.1] ;\n";
         }
         for (int i = 0; i < pre.length; i++) {
             //Se Instancian las P
             for (int j = 0; j < pre[0].length; j++) {
                 //Se generan las transiciones
                 if (pre[i][j] == 1) {//de P's  a T's
-                    content = content + "\"P" + (i) + "\" -> \"t" + (j) + "\" [dir=normal,weight=1] ;\n";
+                    content = content + "\"P" + (i+1) + "\" -> \"t" + (j+1) + "\" [dir=normal,weight=1] ;\n";
                 }
                 if (post[i][j] == 1) {//de T's  a P's
-                    content = content + "\"t" + (j) + "\" -> \"P" + (i) + "\" [dir=normal,weight=1] ;\n";
+                    content = content + "\"t" + (j+1) + "\" -> \"P" + (i+1) + "\" [dir=normal,weight=1] ;\n";
                 }
             }
         }
@@ -612,7 +653,6 @@ public class FrmCovertura extends javax.swing.JFrame {
     private java.awt.TextArea PropertiesTextBox;
     private javax.swing.JButton createPNGraph;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
