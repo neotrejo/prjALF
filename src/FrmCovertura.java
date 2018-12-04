@@ -41,13 +41,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FrmCovertura extends javax.swing.JFrame {
-
+    
+    private  petryNetwork pn;
+    private  int graphView;
     /**
      * Creates new form FrmCovertura
      */
     public FrmCovertura() {
         initComponents();
-
+        graphView=1;
     }
 
     /**
@@ -77,6 +79,7 @@ public class FrmCovertura extends javax.swing.JFrame {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0));
         PropertiesTextBox = new java.awt.TextArea();
         label6 = new java.awt.Label();
+        toggleView = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         panel2 = new java.awt.ScrollPane();
         jPanel4 = new javax.swing.JPanel();
@@ -192,6 +195,7 @@ public class FrmCovertura extends javax.swing.JFrame {
         label5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label5.setText("INIT. MARKING");
 
+        createPNGraph.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         createPNGraph.setText("Create PN Graph");
         createPNGraph.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,23 +208,35 @@ public class FrmCovertura extends javax.swing.JFrame {
         label6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label6.setText("PROPERTIES");
 
+        toggleView.setText("Toggle Coverage Graph View");
+        toggleView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toggleViewActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
+                        .add(36, 36, 36)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(label1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(label2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(transitionsCounter)
-                            .add(placesCounter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 52, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(createPNGraph))
-                .add(40, 40, 40)
+                            .add(placesCounter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 52, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(40, 40, 40))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(toggleView, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(createPNGraph, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .add(18, 18, 18)))
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(label3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 208, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -239,7 +255,7 @@ public class FrmCovertura extends javax.swing.JFrame {
                         .add(0, 0, Short.MAX_VALUE))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(10, 10, 10)
-                        .add(PropertiesTextBox, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)))
+                        .add(PropertiesTextBox, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)))
                 .addContainerGap())
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -258,8 +274,10 @@ public class FrmCovertura extends javax.swing.JFrame {
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(label2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(placesCounter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(36, 36, 36)
+                        .add(createPNGraph)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(createPNGraph))
+                        .add(toggleView))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(label3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(6, 6, 6)
@@ -293,7 +311,7 @@ public class FrmCovertura extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(panel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, panel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PN Graph", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 14))); // NOI18N
@@ -410,7 +428,7 @@ public class FrmCovertura extends javax.swing.JFrame {
 
     private void createPNGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPNGraphActionPerformed
         // Initializes Petry Network Object called "pn": Do not modify.
-        petryNetwork pn = new petryNetwork(Integer.parseInt(placesCounter.getValue().toString()),
+        pn = new petryNetwork(Integer.parseInt(placesCounter.getValue().toString()),
                 Integer.parseInt(transitionsCounter.getValue().toString()));
 
         int nRows = Integer.parseInt(placesCounter.getValue().toString());
@@ -446,7 +464,13 @@ public class FrmCovertura extends javax.swing.JFrame {
     
         makeGraph(pn.getPre(), pn.getPost());
         //makeCoverGraph(gcover);
-        makeCoverGraph(gcoverTarjan);
+        
+        if (graphView == 1){
+            makeCoverGraph(gcoverTarjan);
+        }
+        else{
+            makeCoverGraph(gcover);            
+        }
         
         //Compute Strongly Connected Components...............................//
         List<List<Node>> scc = pn.Tarjan(gcoverTarjan);
@@ -479,8 +503,7 @@ public class FrmCovertura extends javax.swing.JFrame {
         this.PropertiesTextBox.append("Is PN Liveness? ");
         this.PropertiesTextBox.append(Boolean.toString(pn.isPNLiveness(scc)) + "\n");
         
-        
-        this.PropertiesTextBox.append("Number of SCC:?" + Integer.toString(scc.size())+ "\n");
+        this.PropertiesTextBox.append("\nNumber of SCC:?" + Integer.toString(scc.size())+ "\n");
         
         for (int i=0 ; i < scc.size(); i++){
             this.PropertiesTextBox.append("Nodes in SCC[" + Integer.toString(i+1) +"]: ");
@@ -492,6 +515,24 @@ public class FrmCovertura extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_createPNGraphActionPerformed
+
+    private void toggleViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleViewActionPerformed
+        // TODO add your handling code here:
+        
+        Graph myGraph;
+        if (graphView == 1){
+            myGraph =pn.getCoverGraph();
+            if(myGraph!=null)
+                makeCoverGraph(myGraph);
+            graphView=0;
+        }
+        else{
+            myGraph =pn.getTarjanCoverGraph();
+            if(myGraph!=null)
+                makeCoverGraph(myGraph);
+            graphView=1;
+        }
+    }//GEN-LAST:event_toggleViewActionPerformed
     public void makeCoverGraph(Graph gcover) {
         System.out.println(""+gcover.getNodes().size());
         
@@ -681,6 +722,7 @@ public class FrmCovertura extends javax.swing.JFrame {
     private javax.swing.JSpinner placesCounter;
     private javax.swing.JTable postMatrix;
     private javax.swing.JTable preMatrix;
+    private javax.swing.JButton toggleView;
     private javax.swing.JSpinner transitionsCounter;
     // End of variables declaration//GEN-END:variables
 }
