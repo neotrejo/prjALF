@@ -396,7 +396,7 @@ public class petryNetwork {
         }
         //Implement tarjan algorithm to find this.
         //Whether the graph has a directed circuir with all transitions in it.
-        return false;
+        return true;
     }
     
     /**
