@@ -248,24 +248,30 @@ public class petryNetwork {
     }
        
     // Determinacion de propiedades de RP .......... //    
-    public boolean isPNBounded(Graph gcPN){
+    public int isPNBounded(){
+        if(this.graphCover != null){
+            return this.graphCover.getMaxBound();
+        }
         //Ask the graph whether it contains a w in its markings.
-        return true;
+        return 0;
     }       
-    public boolean isPNBlockageFree(Graph gcPN){        
-        //Ask the graph whether it contains an terminal nodes.
-        return true;
+    public boolean isPNBlockage(){        
+        if(this.graphCover != null){
+            return this.graphCover.hasTerminalNodes();
+        }
+        
+        return false;
     }    
-    public boolean isPNEstrictlyConservative (Graph gcPN){
+    public boolean isPNEstrictlyConservative (){
         // Ask the Graph whether the it is bounded and the sum_of_marks is constant across all nodes.
         return true;
     } 
-    public boolean isPNRepetitive(Graph gcPN){
+    public boolean isPNRepetitive(){
         //Implement tarjan algorithm to find this.
         //Whether the graph has a directed circuir with all transitions in it.
         return true;
     }  
-     public boolean isPNReversible(Graph gcPN){
+     public boolean isPNReversible(){
         //Implement tarjan algorithm to find this.
         //Whether all each node is contained in a directed circuit that contains the node n0.
         //(basically, the graph is a Strongly coneceted graph)

@@ -79,4 +79,36 @@ public class Graph {
     public List<Node> getNodes(){
         return this.nodes;
     }
+    
+    /**
+     * Get the max bound of the graph's nodes
+     * @return 
+     */
+    public int getMaxBound(){
+        int max = 0, maxAux;
+ 
+        for (Node node : this.nodes) {
+            maxAux = node.getMaxInMark();
+            if (maxAux > max) {
+                max =  maxAux;
+            }
+        }
+        
+        return max;
+    }
+    
+    /**
+     * Find a terminal node in the graph
+     * @return 
+     */
+    public boolean hasTerminalNodes(){
+         for (Node node : this.nodes) {
+             if(node.getType() == TypeNode.TERMINAL){
+                 return true;
+             }
+         }
+         
+         return false;
+    }
+    
 }

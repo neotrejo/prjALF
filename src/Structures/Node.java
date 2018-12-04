@@ -90,6 +90,23 @@ public class Node {
         
         return true;
     }
+    
+    
+    /**
+     * Get the max number in the mark
+     * @return 
+     */
+    public int getMaxInMark(){
+        int max = 0;
+        
+        for(int i = 0; i < Array.getLength(mark); i++){
+            if(this.mark[i] > max)
+                max = this.mark[i];
+        }
+        
+        return max;
+    }
+    
     /**
      * Find if the mark of the node have W's
      */
