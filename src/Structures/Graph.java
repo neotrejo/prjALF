@@ -98,6 +98,30 @@ public class Graph {
     }
     
     /**
+     * Get the max bound of the graph's nodes
+     * @return 
+     */
+    public boolean isEstrictlyConservative(){
+        int sum, sumAnt = 0;
+ 
+        if(this.nodes.size() > 0){
+            sumAnt = this.nodes.get(0).getSumMark();
+        }
+        
+        for (Node node : this.nodes) {
+            sum = node.getSumMark();
+            if (sum == Node.W) {
+               return false;
+            }
+            if(sum != sumAnt){
+               return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
      * Find a terminal node in the graph
      * @return 
      */

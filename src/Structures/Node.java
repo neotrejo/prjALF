@@ -108,6 +108,23 @@ public class Node {
     }
     
     /**
+     * Get the sum of the node
+     * @return 
+     */
+    public int getSumMark(){
+        int sum = 0;
+        
+        for(int i = 0; i < Array.getLength(mark); i++){
+            if(this.mark[i] != Node.W)
+                sum += this.mark[i];
+            else
+                return Node.W;
+        }
+        
+        return sum;
+    }
+    
+    /**
      * Find if the mark of the node have W's
      */
     public void setWs(){
