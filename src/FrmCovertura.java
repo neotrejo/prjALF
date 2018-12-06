@@ -708,15 +708,18 @@ public class FrmCovertura extends javax.swing.JFrame {
             //Se instancias las T
             content = content + "\"t" + (i+1) + "\" [shape=box,label=\"t" + (i+1) + "\",height=.1,width=.1] ;\n";
         }
+        String label = "";
         for (int i = 0; i < pre.length; i++) {
             //Se Instancian las P
             for (int j = 0; j < pre[0].length; j++) {
                 //Se generan las transiciones
-                if (pre[i][j] == 1) {//de P's  a T's
-                    content = content + "\"P" + (i+1) + "\" -> \"t" + (j+1) + "\" [dir=normal,weight=1] ;\n";
+                if (pre[i][j] > 0) {//de P's  a T's
+                    label = (pre[i][j] == 1)? "": String.valueOf(pre[i][j]);
+                    content = content + "\"P" + (i+1) + "\" -> \"t" + (j+1) + "\" [dir=normal,weight=1, label=\""+label+"\"] ;\n";
                 }
-                if (post[i][j] == 1) {//de T's  a P's
-                    content = content + "\"t" + (j+1) + "\" -> \"P" + (i+1) + "\" [dir=normal,weight=1] ;\n";
+                if (post[i][j] > 0) {//de T's  a P's
+                    label = (post[i][j] == 1)? "": String.valueOf(post[i][j]);
+                    content = content + "\"t" + (j+1) + "\" -> \"P" + (i+1) + "\" [dir=normal,weight=1, label=\""+label+"\"] ;\n";
                 }
             }
         }
