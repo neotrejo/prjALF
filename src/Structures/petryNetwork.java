@@ -38,6 +38,7 @@ public class petryNetwork {
     //For tarjan
     private int index;
     private Stack<Node> S;
+    List<List<Node>> sccAll;
     //
     
     public petryNetwork(int nPlaces, int nTrans){
@@ -518,7 +519,7 @@ public class petryNetwork {
                
     public List<List<Node>> Tarjan(Graph G){
         //output: set of strongly connected components (sets of vertices) 
-        List<List<Node>> sccAll = new ArrayList<>();
+        sccAll = new ArrayList<>();
                    
         this.index=1;
         S.clear();
@@ -527,16 +528,17 @@ public class petryNetwork {
         System.out.print("\nTotal number of nodes: " + Integer.toString(G.getNodes().size()));
         G.getNodes().stream().forEach((v) -> {
             if (v.index == Integer.MAX_VALUE){
-                List<Node> scc = strongconnect(v);
-                if(scc != null){                    
-                    sccAll.add(scc);
-                }
+                //List<Node> scc = strongconnect(v);
+                strongconnect(v);
+                //if(scc != null){                    
+                //    sccAll.add(scc);
+                //}
             }
         });
         return sccAll;
     }
 
-    public List<Node> strongconnect(Node v){        
+    public void strongconnect(Node v){        
         List<Node> scc;     // List to hold the nodes of any SCC found.
         Node wscc;          
         
@@ -568,18 +570,18 @@ public class petryNetwork {
         if (v.lowlink == v.index) {
             //start a new strongly connected component
             scc = new ArrayList();
+            
             do{
               wscc = S.pop();
               wscc.onStack = false;
               //add w_scc to current strongly connected component
               scc.add(wscc);
-            }while (!wscc.equals(v)); //Test it is not the same node (w != v).
+            }while (wscc.getId().compareTo(v.getId())!=0); //Test it is not the same node (w != v).
+            //!wscc.hasThisMark(v.getMark())
             //output the current strongly connected component
-            return scc;
+            this.sccAll.add(scc);
         }
-        return null;               
-        
-        
+        //return null;               
     }
    
     public boolean isPNReversible(List<List<Node>> sccList, Graph graph){
