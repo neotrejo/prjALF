@@ -1,5 +1,26 @@
 digraph CoverGraph          {
 ratio = "auto" ;
 mincross = 6.0 ;
-"n0: 0 0 0 (T)" [shape=box,label="n0: 0 0 0 (T)",height=.1,width=.1] ;
+"n0: 1 0 0 1 0 0 (E)" [shape=box,label="n0: 1 0 0 1 0 0 (E)",height=.1,width=.1] ;
+"n1: 0 1 0 0 1 0 (E)" [shape=box,label="n1: 0 1 0 0 1 0 (E)",height=.1,width=.1] ;
+"n2: 0 0 1 0 1 0 (E)" [shape=box,label="n2: 0 0 1 0 1 0 (E)",height=.1,width=.1] ;
+"n3: 0 1 0 0 0 1 (E)" [shape=box,label="n3: 0 1 0 0 0 1 (E)",height=.1,width=.1] ;
+"n4: 1 0 0 0 1 0 (E)" [shape=box,label="n4: 1 0 0 0 1 0 (E)",height=.1,width=.1] ;
+"n5: 0 0 1 0 0 1 (E)" [shape=box,label="n5: 0 0 1 0 0 1 (E)",height=.1,width=.1] ;
+"n7: 0 1 0 1 0 0 (E)" [shape=box,label="n7: 0 1 0 1 0 0 (E)",height=.1,width=.1] ;
+"n8: 1 0 0 0 0 1 (E)" [shape=box,label="n8: 1 0 0 0 0 1 (E)",height=.1,width=.1] ;
+"n10: 0 0 1 1 0 0 (E)" [shape=box,label="n10: 0 0 1 1 0 0 (E)",height=.1,width=.1] ;
+"n0: 1 0 0 1 0 0 (E)" -> "n1: 0 1 0 0 1 0 (E)" [dir=normal,weight=1,label = "t1"] ;
+"n1: 0 1 0 0 1 0 (E)" -> "n2: 0 0 1 0 1 0 (E)" [dir=normal,weight=1,label = "t2"] ;
+"n1: 0 1 0 0 1 0 (E)" -> "n3: 0 1 0 0 0 1 (E)" [dir=normal,weight=1,label = "t4"] ;
+"n2: 0 0 1 0 1 0 (E)" -> "n4: 1 0 0 0 1 0 (E)" [dir=normal,weight=1,label = "t3"] ;
+"n2: 0 0 1 0 1 0 (E)" -> "n5: 0 0 1 0 0 1 (E)" [dir=normal,weight=1,label = "t4"] ;
+"n3: 0 1 0 0 0 1 (E)" -> "n5: 0 0 1 0 0 1 (E)" [dir=normal,weight=1,label = "t2"] ;
+"n3: 0 1 0 0 0 1 (E)" -> "n7: 0 1 0 1 0 0 (E)" [dir=normal,weight=1,label = "t5"] ;
+"n4: 1 0 0 0 1 0 (E)" -> "n8: 1 0 0 0 0 1 (E)" [dir=normal,weight=1,label = "t4"] ;
+"n5: 0 0 1 0 0 1 (E)" -> "n8: 1 0 0 0 0 1 (E)" [dir=normal,weight=1,label = "t3"] ;
+"n5: 0 0 1 0 0 1 (E)" -> "n10: 0 0 1 1 0 0 (E)" [dir=normal,weight=1,label = "t5"] ;
+"n7: 0 1 0 1 0 0 (E)" -> "n10: 0 0 1 1 0 0 (E)" [dir=normal,weight=1,label = "t2"] ;
+"n8: 1 0 0 0 0 1 (E)" -> "n0: 1 0 0 1 0 0 (E)" [dir=normal,weight=1,label = "t5"] ;
+"n10: 0 0 1 1 0 0 (E)" -> "n0: 1 0 0 1 0 0 (E)" [dir=normal,weight=1,label = "t3"] ;
 }

@@ -35,8 +35,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
 import Structures.*;
 import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 
 import java.util.ArrayList;
@@ -44,6 +48,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JLabel;
+import javax.swing.Timer;
 
 public class FrmCovertura extends javax.swing.JFrame {
     
@@ -139,7 +146,7 @@ public class FrmCovertura extends javax.swing.JFrame {
         label2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label2.setText("PLACES");
 
-        transitionsCounter.setModel(new javax.swing.SpinnerNumberModel(5, 1, null, 1));
+        transitionsCounter.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(5), Integer.valueOf(1), null, Integer.valueOf(1)));
         transitionsCounter.setValue(5);
         transitionsCounter.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -147,7 +154,7 @@ public class FrmCovertura extends javax.swing.JFrame {
             }
         });
 
-        placesCounter.setModel(new javax.swing.SpinnerNumberModel(6, 1, null, 1));
+        placesCounter.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(6), Integer.valueOf(1), null, Integer.valueOf(1)));
         placesCounter.setToolTipText("");
         placesCounter.setValue(6);
         placesCounter.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -269,7 +276,7 @@ public class FrmCovertura extends javax.swing.JFrame {
                         .add(0, 0, Short.MAX_VALUE))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(10, 10, 10)
-                        .add(PropertiesTextBox, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)))
+                        .add(PropertiesTextBox, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)))
                 .addContainerGap())
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -319,6 +326,8 @@ public class FrmCovertura extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Coverage Graph", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 14))); // NOI18N
         jPanel2.setAutoscrolls(true);
 
+        panel2.setBackground(java.awt.Color.white);
+
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -333,6 +342,8 @@ public class FrmCovertura extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PN Graph", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 14))); // NOI18N
         jPanel4.setAutoscrolls(true);
 
+        panel1.setBackground(java.awt.Color.white);
+
         org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -341,7 +352,7 @@ public class FrmCovertura extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(panel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+            .add(panel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -446,10 +457,13 @@ public class FrmCovertura extends javax.swing.JFrame {
         // Initializes Petry Network Object called "pn": Do not modify.
         pn = new petryNetwork(Integer.parseInt(placesCounter.getValue().toString()),
                 Integer.parseInt(transitionsCounter.getValue().toString()));
-
+        
         int nRows = Integer.parseInt(placesCounter.getValue().toString());
         int nCols = Integer.parseInt(transitionsCounter.getValue().toString());
-
+        
+        panel1.removeAll();
+        panel2.removeAll();
+        
         //Loads the preMatrix  data onto the pn object: Do not modify.
         for (int colIndex = 0; colIndex < nCols; colIndex++) {
             for (int rowIndex = 0; rowIndex < nRows; rowIndex++) {
@@ -659,8 +673,18 @@ public class FrmCovertura extends javax.swing.JFrame {
         FileUtils.generateImg(nombreArchivo, "png");
 
         //new GraphFrame(nombreArchivo);
+        BufferedImage img = null;
+        JLabel picLabel = null;
+        try {
+            img = ImageIO.read(new File("CoverGraph.png"));
+            picLabel = new JLabel(new ImageIcon(img));
+        } catch (IOException ex) {
+            Logger.getLogger(FrmCovertura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         panel2.removeAll();
-        panel2.add(new GraphJPanel("CoverGraph",panel2.getWidth(),panel2.getHeight()));
+        panel2.add(picLabel);
+        //panel2.add(new GraphJPanel("CoverGraph",panel2.getWidth(),panel2.getHeight()));
         panel2.repaint();
         
     }
@@ -700,10 +724,19 @@ public class FrmCovertura extends javax.swing.JFrame {
         //System.out.print(content);
         FileUtils.write(nombreArchivo, content, "txt");
         FileUtils.generateImg(nombreArchivo, "png");
-
+        
+        BufferedImage img;
+        JLabel picLabel = null;
+        try {
+            img = ImageIO.read(new File("PetriNetwork.png"));
+            picLabel = new JLabel(new ImageIcon(img));
+        } catch (IOException ex) {
+            Logger.getLogger(FrmCovertura.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //new GraphFrame(nombreArchivo);
         panel1.removeAll();
-        panel1.add(new GraphJPanel("PetriNetwork",panel1.getWidth(),panel1.getHeight()));
+        panel1.add(picLabel);
+        //panel1.add(new GraphJPanel("PetriNetwork",panel1.getWidth(),panel1.getHeight()));
         panel1.repaint();
     }
 
