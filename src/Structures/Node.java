@@ -246,10 +246,10 @@ public class Node {
         String markString = id+": ";
         
         for(int i=0; i < Array.getLength(mark); i++){
-            if(this.mark[i]==0||this.mark[i]==1){
-                markString += String.valueOf(this.mark[i]) + " ";
-            }else{
+            if(this.mark[i]== Node.W){
                 markString += "w ";
+            }else{
+                markString += String.valueOf(this.mark[i]) + " ";
             }
         }
         if(this.getType()==TypeNode.DUPLICADO){

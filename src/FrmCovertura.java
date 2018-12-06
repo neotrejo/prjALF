@@ -629,10 +629,10 @@ public class FrmCovertura extends javax.swing.JFrame {
                 DefaultTableModel newTablaPost = new DefaultTableModel(myObjectPost,miStringPost);
                 postMatrix.setModel(newTablaPost);
                 
-                Object myObjectM0[][]= new Object[post[0].length][1];                
+                Object myObjectM0[][]= new Object[post.length][1];                
                 String miStringM0[] = new String[1];
                 
-                    for(int j=0;j<post[0].length;j++){
+                    for(int j=0;j<post.length;j++){
                         myObjectM0[j][0]=0;
                     }
                     miStringM0[0]="MARKING";
