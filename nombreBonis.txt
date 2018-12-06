@@ -1,7 +1,24 @@
-digraph G{
-"a" -> "b"
-"a" -> "a"
-"b" -> "c"
-"d" -> "a"
-"d" -> "b"
+digraph G {
+  rankdir=LR;
+
+  subgraph cluster1 {
+    fontsize = 20;
+    label = "Group 1";
+    rank=same;
+    A  B  C  D [constraint=false];
+    style = "dashed";
+  }
+
+  subgraph cluster2 {
+    fontsize = 20;
+    label = "Group 2";
+    rank=same;
+    Z  Y  X  W [dir=back, constraint=false];
+    style = "dashed";
+  }
+
+  A -> Z A->Y A->X A->W 
+  B -> Z B->Y B->X B->W 
+  C -> Z C->Y C->X C->W 
+  D -> Z D->Y D->X D->W 
 }

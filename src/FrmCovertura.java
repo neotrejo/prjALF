@@ -35,10 +35,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
 import Structures.*;
 import java.awt.Panel;
+import java.io.File;
+import java.io.FileNotFoundException;
 import javax.swing.ImageIcon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FrmCovertura extends javax.swing.JFrame {
     
@@ -80,6 +85,7 @@ public class FrmCovertura extends javax.swing.JFrame {
         PropertiesTextBox = new java.awt.TextArea();
         label6 = new java.awt.Label();
         toggleView = new javax.swing.JButton();
+        uploadButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         panel2 = new java.awt.ScrollPane();
         jPanel4 = new javax.swing.JPanel();
@@ -133,7 +139,7 @@ public class FrmCovertura extends javax.swing.JFrame {
         label2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label2.setText("PLACES");
 
-        transitionsCounter.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(5), Integer.valueOf(1), null, Integer.valueOf(1)));
+        transitionsCounter.setModel(new javax.swing.SpinnerNumberModel(5, 1, null, 1));
         transitionsCounter.setValue(5);
         transitionsCounter.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -141,7 +147,7 @@ public class FrmCovertura extends javax.swing.JFrame {
             }
         });
 
-        placesCounter.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(6), Integer.valueOf(1), null, Integer.valueOf(1)));
+        placesCounter.setModel(new javax.swing.SpinnerNumberModel(6, 1, null, 1));
         placesCounter.setToolTipText("");
         placesCounter.setValue(6);
         placesCounter.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -215,6 +221,13 @@ public class FrmCovertura extends javax.swing.JFrame {
             }
         });
 
+        uploadButton.setText("Upload Example");
+        uploadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadButtonActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -235,7 +248,8 @@ public class FrmCovertura extends javax.swing.JFrame {
                         .addContainerGap()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(toggleView, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(createPNGraph, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .add(createPNGraph, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(uploadButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .add(18, 18, 18)))
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(label3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -276,6 +290,8 @@ public class FrmCovertura extends javax.swing.JFrame {
                             .add(placesCounter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .add(36, 36, 36)
                         .add(createPNGraph)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(uploadButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .add(toggleView))
                     .add(jPanel1Layout.createSequentialGroup()
@@ -533,6 +549,87 @@ public class FrmCovertura extends javax.swing.JFrame {
             graphView=1;
         }
     }//GEN-LAST:event_toggleViewActionPerformed
+
+    private void uploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadButtonActionPerformed
+       JFileChooser fc = new JFileChooser();
+       
+        int returnVal = fc.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            
+            System.out.println("Abre: "+file.getName());
+            String matrices = "";
+            String text="";
+            List<String[]> auxPre2 = new ArrayList<String[]>();
+            List<String[]> auxPost2 = new ArrayList<String[]>();
+
+            try {
+                Scanner s = new Scanner(file);
+                while(s.hasNextLine()){
+                    text += s.nextLine();
+                }
+                String aux[] = text.split("\\|");
+                String auxPre[]=aux[0].split(" ");
+                String auxPost[]=aux[1].split(" ");
+                
+                for(int i=0;i<auxPre.length;i++){
+                    auxPre2.add(auxPre[i].split(","));
+                }
+                for(int i=0;i<auxPost.length;i++){
+                    auxPost2.add(auxPost[i].split(","));
+                }
+                               
+                int[][] pre = new int[auxPre.length][auxPre2.get(0).length];
+                int[][] post = new int[auxPost.length][auxPost2.get(0).length];
+                
+                for(int i=0;i<auxPre.length;i++){
+                        for(int j=0; j<auxPre2.get(i).length;j++){
+                            pre[i][j]= Integer.parseInt(auxPre2.get(i)[j]);
+                        }
+                }
+                for(int i=0;i<auxPost.length;i++){
+                        for(int j=0; j<auxPost2.get(i).length;j++){
+                            post[i][j]=Integer.parseInt(auxPost2.get(i)[j]);
+                        }
+                }
+                
+                Object myObjectPre[][]=new Object[pre.length][pre[0].length];                
+                String miStringPre[] = new String[pre[0].length];
+                for(int i=0;i<pre.length;i++){
+                    for(int j=0;j<pre[0].length;j++){
+                        myObjectPre[i][j]=pre[i][j];
+                        miStringPre[j]="t"+(j+1);
+                    }
+                }
+                DefaultTableModel newTablaPre = new DefaultTableModel(myObjectPre,miStringPre);
+                preMatrix.setModel(newTablaPre);
+                
+                Object myObjectPost[][]= new Object[post.length][post[0].length];                
+                String miStringPost[] = new String[post[0].length];
+                for(int i=0;i<post.length;i++){
+                    for(int j=0;j<post[0].length;j++){
+                        myObjectPost[i][j]=post[i][j];
+                        miStringPost[j]="t"+(j+1);
+                    }
+                }
+                DefaultTableModel newTablaPost = new DefaultTableModel(myObjectPost,miStringPost);
+                postMatrix.setModel(newTablaPost);
+                
+                Object myObjectM0[][]= new Object[post[0].length][1];                
+                String miStringM0[] = new String[1];
+                
+                    for(int j=0;j<post[0].length;j++){
+                        myObjectM0[j][0]=0;
+                    }
+                    miStringM0[0]="MARKING";
+                DefaultTableModel newTablaM0 = new DefaultTableModel(myObjectM0,miStringM0);
+                m0Matrix.setModel(newTablaM0);
+                
+                placesCounter.setValue(pre.length);
+                transitionsCounter.setValue(pre[0].length);
+            } catch (FileNotFoundException ex) {Logger.getLogger(FrmCovertura.class.getName()).log(Level.SEVERE, null, ex);}
+        } else {}
+    }//GEN-LAST:event_uploadButtonActionPerformed
     public void makeCoverGraph(Graph gcover) {
         System.out.println(""+gcover.getNodes().size());
         
@@ -724,5 +821,6 @@ public class FrmCovertura extends javax.swing.JFrame {
     private javax.swing.JTable preMatrix;
     private javax.swing.JButton toggleView;
     private javax.swing.JSpinner transitionsCounter;
+    private javax.swing.JButton uploadButton;
     // End of variables declaration//GEN-END:variables
 }
