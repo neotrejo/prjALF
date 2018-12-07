@@ -46,6 +46,7 @@ import javax.swing.ImageIcon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -56,6 +57,8 @@ public class FrmCovertura extends javax.swing.JFrame {
     
     private  petryNetwork pn;
     private  int graphView;
+    private static int DELAY = 300;
+    
     /**
      * Creates new form FrmCovertura
      */
@@ -504,7 +507,8 @@ public class FrmCovertura extends javax.swing.JFrame {
         
         //Compute Strongly Connected Components...............................//
         List<List<Node>> scc = pn.Tarjan(gcoverTarjan);
-               
+        
+        //
         
         //Print PN properties...................................................
         this.PropertiesTextBox.setText("");
@@ -671,7 +675,13 @@ public class FrmCovertura extends javax.swing.JFrame {
         //System.out.print(content);
         FileUtils.write(nombreArchivo, content, "txt");
         FileUtils.generateImg(nombreArchivo, "png");
-
+        
+        try {
+            Thread.sleep(this.DELAY);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FrmCovertura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         //new GraphFrame(nombreArchivo);
         BufferedImage img = null;
         JLabel picLabel = null;
@@ -727,6 +737,12 @@ public class FrmCovertura extends javax.swing.JFrame {
         //System.out.print(content);
         FileUtils.write(nombreArchivo, content, "txt");
         FileUtils.generateImg(nombreArchivo, "png");
+        
+        try {
+            Thread.sleep(this.DELAY);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FrmCovertura.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         BufferedImage img;
         JLabel picLabel = null;

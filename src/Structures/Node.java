@@ -179,6 +179,7 @@ public class Node {
             
             Node auxParent = this.parent;
             while(auxParent != null){
+                //if(isMkLargerThanMr(this, auxParent)){
                 if(isVector_nk_LE_nr(this.mark, auxParent.mark)){
                     for(int i = 0; i < Array.getLength(mark); i++){
                         if(this.mark[i] > auxParent.mark[i]){
@@ -217,12 +218,27 @@ public class Node {
 
         boolean is_nk_LE_nr= true;
         for (int i=0; i < Array.getLength(mk); i++){
-            if (mk[i]<mr[i]){
+            if (mk[i] < mr[i]){
                 is_nk_LE_nr = false;
                 break;
             }           
         }    
         return is_nk_LE_nr;
+    }
+    
+    
+    /**
+     * The function compares if vector mk is larger or equal than mr.
+     * The function assumes the vectors length is equal to the number of places
+     * input at the construction time of the NP_Graph object (nPlaces).
+     * if mk is larger than mr, the function returns TRUE. It returns FALSE
+     * otherwise.
+     * @param mk
+     * @param mr
+     * @return 
+     */
+    public boolean isMkLargerThanMr(Node nk, Node nr){
+        return nr.getSumMark() < nk.getSumMark();
     }
     
     //For Tarjan

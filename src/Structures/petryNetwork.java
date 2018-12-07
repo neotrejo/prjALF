@@ -374,7 +374,7 @@ public class petryNetwork {
     public boolean isPNRepetitive(List<List<Node>> scc){
         
         for (List<Node> circuit : scc) {
-            if (this.haveAllTransitions(circuit)) {
+            if (this.hasAllTransitions(circuit)) {
                 return true;
             }
         }
@@ -391,7 +391,7 @@ public class petryNetwork {
      */
     public boolean isPNLiveness(List<List<Node>> scc){
         for (List<Node> circuit : scc) {
-            if (!this.haveAllTransitions(circuit)) {
+            if (!this.hasAllTransitions(circuit)) {
                 return false;
             }
         }
@@ -405,7 +405,7 @@ public class petryNetwork {
      * @param circuit
      * @return 
      */
-    private boolean haveAllTransitions(List<Node> circuit){
+    private boolean hasAllTransitions(List<Node> circuit){
         List<String> trans = new ArrayList<>();
         
         for (Node node : circuit) {
@@ -535,9 +535,40 @@ public class petryNetwork {
                 //}
             }
         });
+        
+        
+        //Filtrar los circtuitos de un solo nodo que no tengan aristas que de salida 
+        this.removeComponents(sccAll);
         return sccAll;
     }
-
+    
+    private void removeComponents(List<List<Node>> scc){
+        
+        List<Node> circuit = null;
+        Node node = null;
+        Transition t = null;
+        boolean delete = false;
+                
+        for(int i = 0; i < scc.size(); i++){
+            circuit = scc.get(i);
+            delete = true;
+            if(circuit.size() == 1){
+               node = circuit.get(0);
+               for(int j = 0; j < node.getTransitions().size(); j++){
+                   t = node.getTransitions().get(j);
+                   if(node.getId().compareTo(t.getEnd().getId())==0){
+                      delete = false; 
+                   }
+               }
+               if(delete){
+                   scc.remove(circuit);
+                   i--;
+               }
+            }
+        }
+    }
+    
+    
     public void strongconnect(Node v){        
         List<Node> scc;     // List to hold the nodes of any SCC found.
         Node wscc;          
