@@ -534,8 +534,12 @@ public class FrmCovertura extends javax.swing.JFrame {
         this.PropertiesTextBox.append("Is PN Reversible? ");
         this.PropertiesTextBox.append(Boolean.toString(pn.isPNReversible(scc, pn.getTarjanCoverGraph())) + "\n");
         
-        this.PropertiesTextBox.append("Is PN Liveness? ");
-        this.PropertiesTextBox.append(Boolean.toString(pn.isPNLiveness(scc)) + "\n");
+        
+        this.PropertiesTextBox.append("Is PN Alive? ");
+        if(pn.isPNBlockageFree())
+            this.PropertiesTextBox.append(Boolean.toString(pn.isPNLiveness(scc)) + "\n");
+        else
+            this.PropertiesTextBox.append("false" + "\n");
         
         this.PropertiesTextBox.append("\nNumber of SCC:?" + Integer.toString(scc.size())+ "\n");
         
