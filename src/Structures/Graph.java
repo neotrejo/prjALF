@@ -89,7 +89,8 @@ public class Graph {
     public Node getDuplicateNodeExpandido(Node node){
         for (int i = 0; i <= this.nodes.size() - 1; i++) {
             if(this.nodes.get(i) != node && 
-               this.nodes.get(i).getType() == TypeNode.EXPANDIDO &&
+               (this.nodes.get(i).getType() == TypeNode.EXPANDIDO ||
+                    this.nodes.get(i).getType() == TypeNode.TERMINAL) &&
                this.nodes.get(i).hasThisMark(node.getMark()))
                 return this.nodes.get(i);
         }
